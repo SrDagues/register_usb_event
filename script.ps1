@@ -2,11 +2,11 @@ function Enable-DriveTrace {
     [CmdletBinding()]param()
     Write-Host "Creo evento"
     $query = "Select * from __InstanceCreationEvent within 1 where TargetInstance ISA 'Win32_LogicalDisk'"
-    $identifier = "DeviceConnected" # el nombre que yo quiera
+    $identifier = "DeviceConnected"
     $actionBlock = {
         Write-Host "UBS INSERTADO"
         Write-Host $event
-        $e = $event.SourceEventArgs.NewEvent.TargetInstance # qué eventos se han producido
+        $e = $event.SourceEventArgs.NewEvent.TargetInstance
         $partition = "ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='$($e.DeviceID)'} WHERE AssocClass = Win32_LogicalDiskToPartition"
         $p = Get-WmiObject -Query $partition
         $disk = "ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='$($e.DeviceID)'} WHERE AssocClass = Win32_DiskDriveToDiskPartition"
